@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
-import { auth } from '../service/firebase/firebase';
+import { auth,authfb } from '../service/firebase/firebase';
 import { signInWithPopup, GoogleAuthProvider,FacebookAuthProvider } from 'firebase/auth';
 import { async } from '@firebase/util';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -17,7 +17,7 @@ export default function Home() {
 
   const handlerWithFacebookLogin= async()=>{
     const facebookAuth = new  FacebookAuthProvider();
-     const result = await signInWithPopup(auth, facebookAuth);
+     const result = await signInWithPopup(authfb, facebookAuth);
   }
   const logout=()=>{
     auth.signOut()
