@@ -28,9 +28,12 @@
   flex-grow: 1;
 }
 
-.title a {
+.title span {
   color: #0070f3;
   text-decoration: none;
+}
+.btn_div{
+  margin-top: 12px;
 }
 
 .title a:hover,
@@ -42,7 +45,7 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 .title,
