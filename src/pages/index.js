@@ -1,15 +1,11 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
-import { auth } from '../service/firebase/firebase';
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-} from 'firebase/auth';
-import { async } from '@firebase/util';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useEffect } from 'react';
+import Head from "next/head";
+
+import { auth } from "../../service/firebase/firebase";
+import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { async } from "@firebase/util";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect } from "react";
+import styles from "../assets/styles/Home.module.scss";
 
 export default function Home() {
   const [user, setUser] = useAuthState(auth);
@@ -23,10 +19,10 @@ export default function Home() {
     const facebookAuth = new FacebookAuthProvider();
     signInWithPopup(auth, facebookAuth)
       .then((result) => {
-        console.log('result', result);
+        console.log("result", result);
       })
       .catch((error) => {
-        console.log('Error:', error);
+        console.log("Error:", error);
       });
   };
   const logout = () => {
@@ -46,7 +42,8 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome <span>{user?.displayName}</span>
+          Welcome <br />
+          <span>{user?.displayName}</span>
         </h1>
         <div className={styles.btn_div}>
           {user ? (
@@ -55,12 +52,8 @@ export default function Home() {
             </>
           ) : (
             <>
-              <button onClick={handlerWithGoogleLogin}>
-                login With Google
-              </button>
-              <button onClick={handlerWithFacebookLogin}>
-                login With FaceBook
-              </button>
+              <button onClick={handlerWithGoogleLogin}>login With Google</button>
+              <button onClick={handlerWithFacebookLogin}>login With FaceBook</button>
             </>
           )}
         </div>
