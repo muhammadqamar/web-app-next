@@ -2,7 +2,8 @@
 
 export default function handler(req, res) {
    if (req.method === 'POST') {
-    console.log(req)
+
+    res.status(500).json({response:req.body,user:req.query})
 
   } else {
     res.status(500).json({ message: 'method not required' })
