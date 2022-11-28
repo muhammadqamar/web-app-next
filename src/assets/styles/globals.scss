@@ -130,6 +130,10 @@ a {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        @media (max-width: 499px) {
+          width: 100%;
+        }
       }
     }
 
