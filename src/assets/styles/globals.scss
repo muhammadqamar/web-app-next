@@ -1,9 +1,22 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
 }
 
 a {
@@ -11,16 +24,169 @@ a {
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
-}
+.user-form {
+  max-width: 1440px;
+  margin: 0 auto;
+  background-color: #fff;
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  .time-line {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f6fc;
+    padding: 20px 44px;
+
+    .hr-line {
+      width: 100%;
+      height: 2px;
+      background-color: #1c2559;
+      margin-top: -20px;
+    }
+
+    .one-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      &:last-child,
+      &:nth-child(3) {
+        .number {
+          background-color: transparent;
+          color: #1c2559;
+          border: 2px solid #1c2559;
+        }
+      }
+
+      .number {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1c2559;
+        border-radius: 50%;
+        color: #f9f6fc;
+        font-size: 22px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .box-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1c2559;
+        white-space: nowrap;
+      }
+    }
   }
-  body {
-    color: white;
-    background: black;
+  .main-form {
+    padding: 46px 120px;
+    form {
+      width: 100%;
+      .user-detail {
+        max-width: 450px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        margin-bottom: 47px;
+        .input-box {
+          label {
+            font-size: 18px;
+            font-weight: 400;
+            color: #1c2559;
+          }
+          input {
+            width: 100%;
+            padding: 8px;
+            outline: none;
+            border-radius: 5px;
+            border: 2px solid #1c2559;
+            font-size: 18px;
+            font-weight: 400;
+            background: #f9f6fc;
+            margin-top: 8px;
+          }
+          p {
+            position: absolute;
+            color: #dd1111;
+          }
+        }
+      }
+
+      .submit-btn {
+        width: 450px;
+        color: #f9f6fc;
+        background: #1c2559;
+        border-radius: 6px;
+        padding: 6px 22px;
+        font-size: 18px;
+        font-weight: 400;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .select-images-box {
+      max-width: 456px;
+      margin: 0 auto;
+      .select-img-heading {
+        font-size: 28px;
+        font-weight: 500;
+        color: #1c2559;
+        margin-bottom: 16px;
+      }
+      .web {
+        margin-right: 18px;
+      }
+      .web-btn {
+        width: 48%;
+        color: #f9f6fc;
+        background: #1c2559;
+        padding: 8px 16px;
+        font-size: 18px;
+      }
+    }
+    .select-web-img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin: 28px 0;
+
+      .main-img-box {
+        width: 242px;
+        height: 156px;
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        & img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        &:hover {
+          & button {
+            position: absolute;
+            background: #f9f6fc;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border: none;
+            outline: none;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
   }
 }

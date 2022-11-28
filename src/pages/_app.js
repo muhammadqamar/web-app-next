@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/globals.scss";
 
 import { store } from "../redux/store";
