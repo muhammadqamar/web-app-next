@@ -1,189 +1,78 @@
-import React, { useRef } from "react";
-import { Formik } from "formik";
-import { Alert, Button, Modal } from "react-bootstrap";
-import Camera from "react-html5-camera-photo";
-import "react-html5-camera-photo/build/css/index.css";
+import React from "react";
+import Link from "next/link";
+import { Modal, Button } from "react-bootstrap";
+import Card from "../../compunents/comman/cards";
 
-import TimeLine from "../../compunents/comman/timeLine";
-
-const Index = () => {
-  const [modalShow, setModalShow] = React.useState(false);
-  const [selectedImage, setSelectedImage] = React.useState({ files: [] });
-  function handleTakePhoto(dataUri) {
-    // Do stuff with the photo...
-
-    setSelectedImage({ files: [...selectedImage.files, dataUri] });
-  }
-  const inputFolder = useRef();
+const ImagesModel = (props) => {
+  const { show, onHide, gallery } = props;
   return (
-    <div className="user-form">
-      <TimeLine />
-
-      <div className="main-form">
-        <Formik
-          initialValues={{ name: "", email: "", password: "" }}
-          validate={(values) => {
-            const errors = {};
-            if (!values.name) {
-              errors.name = "Required";
-            }
-            if (!values.password) {
-              errors.password = "Required";
-            }
-            if (!values.email) {
-              errors.email = "Required";
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-              errors.email = "Invalid email address";
-            }
-            return errors;
-          }}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
-          }}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-            /* and other goodies */
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <div className="user-detail">
-                <div className="input-box">
-                  <label>Your Name</label>
-                  <input
-                    type="name"
-                    name="name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.name}
-                  />
-                  <p className="">{errors.name && touched.name && errors.name}</p>
-                </div>
-                <div className="input-box">
-                  <label>Your Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.email}
-                  />
-                  <p className="">{errors.email && touched.email && errors.email}</p>
-                </div>
-                <div className="input-box">
-                  <label>Your Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                  />
-                  <p className="">{errors.password && touched.password && errors.password}</p>
-                </div>
-              </div>
-              <div className="select-images-box">
-                <h5 className="select-img-heading">Select Images</h5>
-                <Button
-                  className="web-btn web"
-                  variant="primary"
-                  onClick={() => setModalShow(true)}
-                >
-                  Web Cam
-                </Button>
-                <Button
-                  className="web-btn"
-                  variant="primary"
-                  onClick={() => inputFolder.current.click()}
-                >
-                  upload Image
-                </Button>
-
-                <Modal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                  size="lg"
-                  aria-labelledby="contained-modal-title-vcenter"
-                  centered
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">Take a Picture</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Camera
-                      onTakePhoto={(dataUri) => {
-                        handleTakePhoto(dataUri);
-                      }}
-                    />
-                  </Modal.Body>
-                </Modal>
-              </div>
-              <div className="select-web-img">
-                {selectedImage.files?.map(
-                  (data, topCounter) =>
-                    !!data && (
-                      <div className="main-img-box">
-                        <img
-                          alt="not fount"
-                          accept="image/jpeg, image/png, image/jpg"
-                          src={typeof data === "string" ? data : URL.createObjectURL(data)}
-                        />
-                        <br />
-                        <button
-                          onClick={() =>
-                            setSelectedImage({
-                              files: [
-                                ...selectedImage.files.filter(
-                                  (images, counter) => !(counter === topCounter)
-                                ),
-                              ],
-                            })
-                          }
-                        >
-                          <img
-                            src="https://img.icons8.com/external-flat-icons-inmotus-design/512/external-close-browser-ui-elements-flat-icons-inmotus-design.png"
-                            alt=""
-                          />
-                        </button>
-                      </div>
-                    )
-                )}
-              </div>
-              <input
-                ref={inputFolder}
-                className="primary"
-                type="file"
-                name="myImage"
-                onChange={(event) => {
-                  setSelectedImage({ files: [...selectedImage.files, ...event.target.files] });
-                  console.log(event.target.files);
-                }}
-                multiple
-                style={{ display: "none" }}
-              />
-
-              <button
-                className="submit-btn"
-                variant="primary"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Submit
-              </button>
-            </form>
-          )}
-        </Formik>
-      </div>
-    </div>
+    <Modal
+      show={show}
+      onHide={onHide}
+      size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">Images Gallery</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="model-gallery-img">
+          {gallery?.map((item) => (
+            <div
+              className="gallery-img"
+              style={{
+                backgroundImage: `url(${item})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+          ))}
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 
+const Index = ({ posts }) => {
+  const [modalShow, setModalShow] = React.useState(false);
+  const [activeTune, setActiveTune] = React.useState([]);
+  console.log(posts);
+  return (
+    <>
+      <div className="container top-nav-btn">
+        <Link href="/dashboard/ai-avatar">
+          <Button variant="primary">Create New</Button>
+        </Link>
+      </div>
+      <div className="container dashboard-cards-box">
+        <div className="cards-flex-box">
+          {posts?.response?.map((data) => (
+            <Card
+              title={data?.title}
+              onClick={() => {
+                setActiveTune(data.images);
+                setModalShow(true);
+              }}
+              cardImg={data.images?.[0]}
+            />
+          ))}
+        </div>
+
+        <ImagesModel gallery={activeTune} show={modalShow} onHide={() => setModalShow(false)} />
+      </div>
+    </>
+  );
+};
 export default Index;
+
+export async function getStaticProps() {
+  const res = await fetch("http://localhost:3000/api/getAllFineTunes");
+  const posts = await res.json();
+  return {
+    props: {
+      posts,
+    },
+  };
+}
