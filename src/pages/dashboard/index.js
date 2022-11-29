@@ -47,18 +47,7 @@ const Index = ({ posts }) => {
         </Link>
       </div>
       <div className="container dashboard-cards-box">
-        <div className="cards-flex-box">
-          {posts?.response?.map((data) => (
-            <Card
-              title={data?.title}
-              onClick={() => {
-                setActiveTune(data.images);
-                setModalShow(true);
-              }}
-              cardImg={data.images?.[0]}
-            />
-          ))}
-        </div>
+        <div className="cards-flex-box"></div>
 
         <ImagesModel gallery={activeTune} show={modalShow} onHide={() => setModalShow(false)} />
       </div>
@@ -68,7 +57,7 @@ const Index = ({ posts }) => {
 export default Index;
 
 export async function getStaticProps() {
-  const res = await fetch("http://localhost:3000/api/getAllFineTunes");
+  const res = await fetch("https://web-next-app.netlify.app/api/getAllFineTunes");
   const posts = await res.json();
   return {
     props: {
