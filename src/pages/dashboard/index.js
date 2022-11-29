@@ -47,7 +47,18 @@ const Index = ({ posts }) => {
         </Link>
       </div>
       <div className="container dashboard-cards-box">
-        <div className="cards-flex-box"></div>
+        <div className="cards-flex-box">
+          {posts?.response?.map((data) => (
+            <Card
+              title={data?.title}
+              onClick={() => {
+                setActiveTune(data.images);
+                setModalShow(true);
+              }}
+              cardImg={data.images?.[0]}
+            />
+          ))}
+        </div>
 
         <ImagesModel gallery={activeTune} show={modalShow} onHide={() => setModalShow(false)} />
       </div>
