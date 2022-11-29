@@ -22,7 +22,7 @@ const ImagesModel = (props) => {
             <div
               className="gallery-img"
               style={{
-                backgroundImage: `url(${item})`,
+                backgroundImage: `url('${item}')`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
