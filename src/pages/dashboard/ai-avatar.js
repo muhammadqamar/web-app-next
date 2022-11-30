@@ -59,7 +59,7 @@ const AiAvatar = () => {
               body:  formData,
             };
 
-            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/finetune`, options)
+            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/finetuneasync`, options)
               .then((r) => r.json())
               .then((data) => console.log(data))
               .catch((error) => console.log(error));
