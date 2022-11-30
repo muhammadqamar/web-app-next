@@ -19,7 +19,7 @@ const ImagesModel = (props) => {
       </Modal.Header>
       <Modal.Body>
         <div className="model-gallery-img">
-          {/* {gallery?.map((item) => (
+          {gallery?.map((item) => (
             <div
               className="gallery-img"
               style={{
@@ -29,7 +29,7 @@ const ImagesModel = (props) => {
                 backgroundRepeat: "no-repeat",
               }}
             />
-          ))} */}
+          ))}
         </div>
       </Modal.Body>
     </Modal>
@@ -49,7 +49,7 @@ const Index = ({ posts }) => {
       </div>
       <div className="container dashboard-cards-box">
         <div className="cards-flex-box">
-          {posts?.response?.map((data) => (
+          {/* {posts?.response?.map((data) => (
             <Card
               title={data?.title}
               onClick={() => {
@@ -58,7 +58,7 @@ const Index = ({ posts }) => {
               }}
               cardImg={data.images?.[0]}
             />
-          ))}
+          ))} */}
         </div>
 
         <ImagesModel gallery={activeTune} show={modalShow} onHide={() => setModalShow(false)} />
