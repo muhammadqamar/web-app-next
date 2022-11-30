@@ -1,21 +1,22 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
 export default function handler(req, res) {
-  if (req.method !== 'POST') {
+  if (req.method === 'POST') {
     var myHeaders = new Headers();
-    myHeaders.append(
-      'Authorization',
-      'Bearer sd_izwRvNfpqqP5v5g33iD8X3Vhjn2S51'
-    );
     myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append(
+      'X-Postmark-Server-Token',
+      '13486d73-9f24-4746-816f-57c80c7b3b76'
+    );
 
     var raw = JSON.stringify({
-      prompt: {
-        text: 'sks tree',
-        callback:
-          'https://web-next-app.netlify.app/api/callbackforunit?email=qqq@gmail.com',
-      },
-      branch: 'fast',
+      From: 'qammar@curriki.org',
+      To: 'qammar@curriki.org',
+      Subject: 'Postmark test',
+      TextBody: 'Hello dear Postmark user.',
+      HtmlBody: `<html><body><strong>Hello</strong>
+  <h1>email: ${req.query.email}</h1>
+  <p>${JSON.stringify(req.body)}</p>
+  </body></html>`,
+      MessageStream: 'outbound',
     });
 
     var requestOptions = {
@@ -25,9 +26,9 @@ export default function handler(req, res) {
       redirect: 'follow',
     };
 
-    return fetch('https://api.astria.ai/tunes/23154/prompts', requestOptions)
-      .then((r) => r.json())
-      .then((data) => res.status(200).json({ response: data }))
+    fetch('https://api.postmarkapp.com/email', requestOptions)
+      .then((response) => response.text())
+      .then((result) => res.status(200).json({ response: 'message sent' }))
       .catch((error) => res.status(500).json({ response: error }));
   } else {
     res.status(500).json({ message: 'method not required' });

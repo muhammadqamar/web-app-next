@@ -1,10 +1,10 @@
-import React, { useRef } from "react";
-import { Formik, Field } from "formik";
-import { Button, Modal, Form } from "react-bootstrap";
-import Camera from "react-html5-camera-photo";
-import "react-html5-camera-photo/build/css/index.css";
+import React, { useRef } from 'react';
+import { Formik, Field } from 'formik';
+import { Button, Modal, Form } from 'react-bootstrap';
+import Camera from 'react-html5-camera-photo';
+import 'react-html5-camera-photo/build/css/index.css';
 
-import TimeLine from "../../compunents/comman/timeLine";
+import TimeLine from '../../compunents/comman/timeLine';
 
 const AiAvatar = () => {
   const [modalShow, setModalShow] = React.useState(false);
@@ -21,11 +21,11 @@ const AiAvatar = () => {
 
       <div className="main-form">
         <Formik
-          initialValues={{ title: "", dropdown: "", checked: [] }}
+          initialValues={{ title: '', dropdown: '', checked: [] }}
           validate={(values) => {
             const errors = {};
             if (!values.title) {
-              errors.title = "Required";
+              errors.title = 'Required';
             }
             // if (!values.password) {
             //   errors.password = "Required";
@@ -38,10 +38,45 @@ const AiAvatar = () => {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+            console.log(values);
+            const formData = new FormData();
+
+            // Object.keys(values).forEach((data) => {
+            //   formData.append(data, values[data]);
+
+            // });
+            formData.append('tune[title]', 'grumpy cat');
+            formData.append('tune[branch]', 'fast');
+            formData.append('tune[name]', 'man');
+            // selectedImage.files?.forEach((element) => {
+            //   formData.append('tune[images][]', element);
+            // });
+            // formData.append('tune[callback]', 'man');
+
+            let options = {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                tune: {
+                  callback: "https://optional-callback-url.com/to-your-service-when-ready",
+                  title: "Grumpy cat",
+                  name: "cat",
+                  branch: "fast",
+                  image_urls: [
+                    `https://i.imgur.com/HLHBnl9.jpeg`,
+                    "https://i.imgur.com/HLHBnl9.jpeg",
+                    "https://i.imgur.com/HLHBnl9.jpeg",
+                    "https://i.imgur.com/HLHBnl9.jpeg"
+                  ]
+                }
+              }),
+            };
+            fetch('http://localhost:3000/api/finetune', options)
+              .then((r) => r.json())
+              .then((data) => console.log(data))
+              .catch((error) => console.log(error));
           }}
         >
           {({
@@ -58,12 +93,14 @@ const AiAvatar = () => {
               <div className="form-details">
                 <h4 className="">Upload photos</h4>
                 <p className="">
-                  Select 10-20 photos of yourself (or you and your partner as a couple, or your dog
-                  or cat). We'll train the Al to generate Al-generated avatars that look just like
-                  you in any style you want.
+                  Select 10-20 photos of yourself (or you and your partner as a
+                  couple, or your dog or cat). We'll train the Al to generate
+                  Al-generated avatars that look just like you in any style you
+                  want.
                 </p>
                 <h6 className="">
-                  The better you follow these guidelines, the better your avatars:
+                  The better you follow these guidelines, the better your
+                  avatars:
                 </h6>
 
                 <ul>
@@ -82,17 +119,19 @@ const AiAvatar = () => {
                   <li>No nudes</li>
                 </ul>
                 <p className="">
-                  <span>Note: </span> Al can have random results and may include artistic nudes,
-                  erotic or otherwise shocking images, <br />
-                  if you do not want that and are sensitive, we recommend you to NOT use this site!
+                  <span>Note: </span> Al can have random results and may include
+                  artistic nudes, erotic or otherwise shocking images, <br />
+                  if you do not want that and are sensitive, we recommend you to
+                  NOT use this site!
                   <br />
-                  The Al may also generate artefacts and defects, this is out of our control. Please
-                  accept that risk before buying!
+                  The Al may also generate artefacts and defects, this is out of
+                  our control. Please accept that risk before buying!
                   <br />
                   <br />
-                  or your safety: the images you upload are ONLY used to generate your Al Avatars.
-                  <br /> Both the images you upload and the Al model trained are auto deleted within
-                  5 Days.
+                  or your safety: the images you upload are ONLY used to
+                  generate your Al Avatars.
+                  <br /> Both the images you upload and the Al model trained are
+                  auto deleted within 5 Days.
                 </p>
               </div>
 
@@ -106,7 +145,9 @@ const AiAvatar = () => {
                     onBlur={handleBlur}
                     value={values.title}
                   />
-                  <p className="">{errors.title && touched.title && errors.title}</p>
+                  <p className="">
+                    {errors.title && touched.title && errors.title}
+                  </p>
                 </div>
                 <div className="input-box">
                   <label>Select:</label>
@@ -118,9 +159,9 @@ const AiAvatar = () => {
                     aria-label="Default select example"
                   >
                     <option>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option value="One">One</option>
+                    <option value="Two"></option>
+                    <option value="Three">Three</option>
                   </Form.Select>
                 </div>
                 <div
@@ -132,11 +173,19 @@ const AiAvatar = () => {
                   <label>Select Category:</label>
                   <br />
                   <label>
-                    <Field type="checkbox" name="checked" value="Mixed Outputs" />
+                    <Field
+                      type="checkbox"
+                      name="checked"
+                      value="Mixed Outputs"
+                    />
                     <span>Mixed Outputs</span>
                   </label>
                   <label>
-                    <Field type="checkbox" name="checked" value="Linkedin Profile Pic" />
+                    <Field
+                      type="checkbox"
+                      name="checked"
+                      value="Linkedin Profile Pic"
+                    />
                     <span>Linkedin Profile Pic</span>
                   </label>
                   <label>
@@ -174,7 +223,9 @@ const AiAvatar = () => {
                   centered
                 >
                   <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">Take a Picture</Modal.Title>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                      Take a Picture
+                    </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <Camera
@@ -193,7 +244,11 @@ const AiAvatar = () => {
                         <img
                           alt="not fount"
                           accept="image/jpeg, image/png, image/jpg"
-                          src={typeof data === "string" ? data : URL.createObjectURL(data)}
+                          src={
+                            typeof data === 'string'
+                              ? data
+                              : URL.createObjectURL(data)
+                          }
                         />
                         <br />
                         <button
@@ -222,18 +277,19 @@ const AiAvatar = () => {
                 type="file"
                 name="myImage"
                 onChange={(event) => {
-                  setSelectedImage({ files: [...selectedImage.files, ...event.target.files] });
-                  console.log(event.target.files);
+                  setSelectedImage({
+                    files: [...selectedImage.files, ...event.target.files],
+                  });
                 }}
                 multiple
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
               />
 
               <button
                 className="submit-btn"
                 variant="primary"
                 type="submit"
-                disabled={isSubmitting}
+                // disabled={isSubmitting}
               >
                 Submit
               </button>
