@@ -9,8 +9,8 @@ export default function handler(req, res) {
 
     var raw = JSON.stringify({
       tuneId: req.body.id,
-      email:req.query.email,
-      text:req.query.text.replace(/,/g, " ")
+      email:'livetest@gmail.com',
+      text:'portrait of sks cat as Santa Claus8'
     });
 
     var requestOptions = {

@@ -13,7 +13,7 @@ export default function handler(req, res) {
       body:
         JSON.stringify({
           tune: {
-            callback: `${process.env.NEXT_PUBLIC_DOMAIN}/api/callbackforunit?email=livetest@gmail.com&text=portrait,of,sks,cat,as,Santa,Claus`,
+            callback: `${process.env.NEXT_PUBLIC_DOMAIN}/api/callbackforunit`,
             title: "Grumpy cat",
             name: "cat",
             branch: "fast",
