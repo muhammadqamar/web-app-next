@@ -1,9 +1,9 @@
 import nc from 'next-connect';
 import onError from '../../compunents/comman/error';
 import multer from 'multer';
-import path from 'path';
+//import path from 'path';
 import FormData from 'form-data';
-import fs from 'fs';
+// import fs from 'fs';
 
 export const config = {
   api: {
@@ -13,33 +13,18 @@ export const config = {
 
 const handler = nc(onError);
 
-let storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public');
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + '-' + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-let filestoRead = fs.readdirSync('./public');
-console.log(filestoRead);
-let upload = multer({
-  storage: storage,
-});
+let upload = multer();
 
 let uploadFile = upload.array('file');
 handler.use(uploadFile);
 handler.post(async (req, res) => {
   let formData = new FormData();
-
+   console.log(req.body)
   formData.append('tune[branch]', 'fast');
    formData.append('tune[title]', req.body.title);
   formData.append('tune[name]', req.body.name);
-  req.files.map((data) => {
-    formData.append(`tune[images][]`, fs.createReadStream(data.path));
+  req.body.file.map((data) => {
+    formData.append(`tune[images][]`, data);
   });
   let optionsForTune = {
     method: 'POST',

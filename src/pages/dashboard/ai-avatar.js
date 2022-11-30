@@ -303,7 +303,7 @@ const AiAvatar = () => {
                 className="submit-btn"
                 variant="primary"
                 type="submit"
-                disabled={isSubmitting}
+               // disabled={isSubmitting}
               >
                 {!isSubmitting ? 'Submit' : 'Processing please wait ....'}
               </button>
