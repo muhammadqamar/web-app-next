@@ -1,40 +1,7 @@
-import nextConnect from 'next-connect'
-import FormData from 'form-data';
-const multer = require('multer');
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: './public/uploads',
-    filename: (req, file, cb) => cb(null, file.originalname),
-  }),
-});
-
-const apiRoute = nextConnect({
-  onError(error, req, res) {
-    res.status(501).json({ error: `Sorry something Happened! ${error.message}` });
-  },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
-  },
-});
-
-apiRoute.use(upload.array('theFiles'));
-
-apiRoute.post((req, res) => {
+export default function handler(req, res) {
 
   if (req.method === 'POST') {
-    let formData = new FormData();
 
-
-
-    formData.append('tune[title]', 'grumpy cat');
-    formData.append('tune[branch]', 'fast');
-    formData.append('tune[name]', 'man');
-    formData.append('tune[images][]', `data:image/png;base64,iVBORw0KGgoAAAANSUhEU`);
-
-    // selectedImage.files?.forEach((element) => {
-    //   formData.append('tune[images][]', element);
-    // });
     const promptText="portrait of sks cat as Santa Claus"
     let options = {
       method: 'POST',
@@ -67,12 +34,4 @@ apiRoute.post((req, res) => {
   } else {
     res.status(500).json({ message: 'method not required' });
   }
-})
-
-export default apiRoute;
-
-export const config = {
-  api: {
-    bodyParser: false, // Disallow body parsing, consume as stream
-  },
-};
+}
