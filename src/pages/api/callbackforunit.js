@@ -1,7 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 export default function handler(req, res) {
+  console.log("callbackforunit", req)
   if (req.method === 'POST') {
+
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
@@ -18,7 +20,7 @@ export default function handler(req, res) {
       redirect: 'follow',
     };
 
-    fetch('https://web-next-app.netlify.app/api/prompt', requestOptions).then((r) => r.json())
+    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/prompt`, requestOptions).then((r) => r.json())
     .then((data) => res.status(200).json({ response: data }))
     .catch((error) => res.status(500).json({ response: error }));
 

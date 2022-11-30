@@ -58,7 +58,8 @@ const AiAvatar = () => {
              // headers: { 'content-type': 'multipart/form-data;boundary=MyBoundary' },
               body:  formData,
             };
-            fetch('https://web-next-app.netlify.app/api/finetune', options)
+
+            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/finetune`, options)
               .then((r) => r.json())
               .then((data) => console.log(data))
               .catch((error) => console.log(error));

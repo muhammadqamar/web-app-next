@@ -44,7 +44,7 @@ apiRoute.post((req, res) => {
       body:
         JSON.stringify({
           tune: {
-            callback: "https://web-next-app.netlify.app/api/callbackforunitPrompt?email=livetest@gmail.com",
+            callback: `${process.env.NEXT_PUBLIC_DOMAIN}/api/callbackforunitPrompt?email=livetest@gmail.com`,
             title: "Grumpy cat",
             name: "cat",
             branch: "fast",

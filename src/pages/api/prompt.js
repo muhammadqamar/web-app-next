@@ -33,7 +33,7 @@ export default function handler(req, res) {
         console.log("asdsad",data);
         if (!data.id) {
           fetch(
-            `https://web-next-app.netlify.app/api/callbackforunitPrompt?email=${req.body.email}`,
+            `${process.env.NEXT_PUBLIC_DOMAIN}/api/callbackforunitPrompt?email=${req.body.email}`,
             {
               method: 'POST',
 

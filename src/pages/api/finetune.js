@@ -3,6 +3,7 @@ export default function handler(req, res) {
   if (req.method === 'POST') {
 
     const promptText="portrait of sks cat as Santa Claus"
+
     let options = {
       method: 'POST',
       headers: {
@@ -12,7 +13,7 @@ export default function handler(req, res) {
       body:
         JSON.stringify({
           tune: {
-            callback: `https://web-next-app.netlify.app/api/callbackforunit?email=livetest@gmail.com&text=${promptText.replace(/ /g, ",")}`,
+            callback: `${process.env.NEXT_PUBLIC_DOMAIN}/api/callbackforunit?email=livetest@gmail.com&text=portrait,of,sks,cat,as,Santa,Claus`,
             title: "Grumpy cat",
             name: "cat",
             branch: "fast",
@@ -27,7 +28,7 @@ export default function handler(req, res) {
       ,
       redirect: 'follow'
     };
-     fetch('https://api.astria.ai/tunes', options)
+      fetch('https://api.astria.ai/tunes', options)
       .then((r) => r.json())
       .then((data) => res.status(200).json({ response: data }))
       .catch((error) => res.status(500).json({ response: error }));
