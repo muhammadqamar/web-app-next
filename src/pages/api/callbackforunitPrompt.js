@@ -13,9 +13,9 @@ export default function handler(req, res) {
       Subject: 'Postmark test',
       TextBody: 'Hello dear Postmark user.',
       HtmlBody: `<html><body><strong>Hello</strong>
-  <h1>email: ${req.query.email}</h1>
-  <p>${JSON.stringify(req.body)}</p>
-  </body></html>`,
+      <h1>email: ${req.query.email}</h1>
+      <p>${JSON.stringify(req.body)}</p>
+      </body></html>`,
       MessageStream: 'outbound',
     });
 

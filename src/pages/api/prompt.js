@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 export default function handler(req, res) {
-  if (req.method !== 'POST') {
+  console.log(req.body)
+  if (req.method === 'POST') {
     var myHeaders = new Headers();
     myHeaders.append(
       'Authorization',
@@ -11,11 +12,10 @@ export default function handler(req, res) {
 
     var raw = JSON.stringify({
       prompt: {
-        text: 'sks tree',
-        callback:
-          'https://web-next-app.netlify.app/api/callbackforunit?email=qqq@gmail.com',
+        text: req.body.text,
+        callback:`https://web-next-app.netlify.app/api/callbackforunitPrompt?email=${req.body.text}`,
       },
-      branch: 'fast',
+
     });
 
     var requestOptions = {
@@ -25,9 +25,12 @@ export default function handler(req, res) {
       redirect: 'follow',
     };
 
-    return fetch('https://api.astria.ai/tunes/23154/prompts', requestOptions)
+    return fetch(`https://api.astria.ai/tunes/${req.body.tuneId}/prompts`, requestOptions)
       .then((r) => r.json())
-      .then((data) => res.status(500).json({ response: data }))
+      .then((data) => {
+         console.log(data)
+        res.status(500).json({ response: data })
+      })
       .catch((error) => res.status(500).json({ response: error }));
   } else {
     res.status(500).json({ message: 'method not required' });

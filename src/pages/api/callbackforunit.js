@@ -6,7 +6,9 @@ export default function handler(req, res) {
     myHeaders.append('Content-Type', 'application/json');
 
     var raw = JSON.stringify({
-
+      tuneId: req.body.id,
+      email:req.query.email,
+      text:req.query.text
     });
 
     var requestOptions = {
@@ -16,10 +18,8 @@ export default function handler(req, res) {
       redirect: 'follow',
     };
 
-    fetch('/prompt', requestOptions)
-      .then((response) => response.text())
-      .then((result) => res.status(200).json({ response: 'message sent' }))
-      .catch((error) => res.status(500).json({ response: error }));
+    fetch('https://web-next-app.netlify.app/api/prompt', requestOptions)
+
   } else {
     res.status(500).json({ message: 'method not required' });
   }

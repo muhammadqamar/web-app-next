@@ -5,6 +5,7 @@ import Card from "../../compunents/comman/cards";
 
 const ImagesModel = (props) => {
   const { show, onHide, gallery } = props;
+  console.log(props)
   return (
     <Modal
       show={show}

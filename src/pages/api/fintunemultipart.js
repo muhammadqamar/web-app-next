@@ -18,7 +18,7 @@ const apiRoute = nextConnect({
   },
 });
 
-apiRoute.use(upload.array('theFiles'));
+apiRoute.use(upload.array('images'));
 
 apiRoute.post((req, res) => {
 
@@ -44,7 +44,7 @@ apiRoute.post((req, res) => {
       body:
         JSON.stringify({
           tune: {
-            callback: "https://web-next-app.netlify.app/api/callbackforunit?email=livetest@gmail.com&text=portrait of sks cat as Santa Claus",
+            callback: "https://web-next-app.netlify.app/api/callbackforunitPrompt?email=livetest@gmail.com",
             title: "Grumpy cat",
             name: "cat",
             branch: "fast",

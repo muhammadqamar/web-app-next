@@ -12,7 +12,7 @@ export default function handler(req, res) {
       };
 
       fetch("https://api.astria.ai/tunes", requestOptions)
-        .then(response => response.text())
+        .then(response => response.json())
         .then(result => res.status(200).json({ response: result }))
         .catch(error =>  res.status(500).json({ response: error }));
 

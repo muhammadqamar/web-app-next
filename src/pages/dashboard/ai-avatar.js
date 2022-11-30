@@ -39,8 +39,8 @@ const AiAvatar = () => {
           }}
           onSubmit={(values, { setSubmitting }) => {
             console.log(values);
-            const formData = new FormData();
 
+            const formData = new FormData();
             // Object.keys(values).forEach((data) => {
             //   formData.append(data, values[data]);
 
@@ -48,32 +48,17 @@ const AiAvatar = () => {
             formData.append('tune[title]', 'grumpy cat');
             formData.append('tune[branch]', 'fast');
             formData.append('tune[name]', 'man');
-            // selectedImage.files?.forEach((element) => {
-            //   formData.append('tune[images][]', element);
-            // });
+            selectedImage.files?.forEach((element) => {
+              formData.append('tune[images][]', element);
+            });
             // formData.append('tune[callback]', 'man');
 
             let options = {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                tune: {
-                  callback: "https://optional-callback-url.com/to-your-service-when-ready",
-                  title: "Grumpy cat",
-                  name: "cat",
-                  branch: "fast",
-                  image_urls: [
-                    `https://i.imgur.com/HLHBnl9.jpeg`,
-                    "https://i.imgur.com/HLHBnl9.jpeg",
-                    "https://i.imgur.com/HLHBnl9.jpeg",
-                    "https://i.imgur.com/HLHBnl9.jpeg"
-                  ]
-                }
-              }),
+             // headers: { 'content-type': 'multipart/form-data;boundary=MyBoundary' },
+              body:  formData,
             };
-            fetch('http://localhost:3000/api/finetune', options)
+            fetch('https://web-next-app.netlify.app/api/finetune', options)
               .then((r) => r.json())
               .then((data) => console.log(data))
               .catch((error) => console.log(error));
@@ -275,7 +260,7 @@ const AiAvatar = () => {
                 ref={inputFolder}
                 className="primary"
                 type="file"
-                name="myImage"
+                name="images"
                 onChange={(event) => {
                   setSelectedImage({
                     files: [...selectedImage.files, ...event.target.files],
