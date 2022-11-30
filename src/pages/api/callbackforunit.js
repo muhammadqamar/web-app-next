@@ -8,7 +8,7 @@ export default function handler(req, res) {
     var raw = JSON.stringify({
       tuneId: req.body.id,
       email:req.query.email,
-      text:req.query.text
+      text:req.query.text.replace(/,/g, " ")
     });
 
     var requestOptions = {

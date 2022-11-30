@@ -35,6 +35,7 @@ apiRoute.post((req, res) => {
     // selectedImage.files?.forEach((element) => {
     //   formData.append('tune[images][]', element);
     // });
+    const promptText="portrait of sks cat as Santa Claus"
     let options = {
       method: 'POST',
       headers: {
@@ -44,7 +45,7 @@ apiRoute.post((req, res) => {
       body:
         JSON.stringify({
           tune: {
-            callback: "https://web-next-app.netlify.app/api/callbackforunit?email=livetest@gmail.com&text=portrait of sks cat as Santa Claus",
+            callback: `https://web-next-app.netlify.app/api/callbackforunit?email=livetest@gmail.com&text=${promptText.replace(/ /g, ",")}`,
             title: "Grumpy cat",
             name: "cat",
             branch: "fast",
