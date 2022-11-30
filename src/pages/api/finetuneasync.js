@@ -1,7 +1,7 @@
 export default async function  handler(req, res) {
 
     if (req.method === 'POST') {
-
+      console.log(req.body)
 
       let optionsForTune = {
         method: 'POST',
@@ -43,12 +43,12 @@ export default async function  handler(req, res) {
         ,
         redirect: 'follow'
       };
-        const fineTune =  await fetch('https://api.astria.ai/tunes', optionsForTune)
-        const responseTune = await fineTune.json()
+        // const fineTune =  await fetch('https://api.astria.ai/tunes', optionsForTune)
+        // const responseTune = await fineTune.json()
 
-        const callPrompt =  await fetch(`https://api.astria.ai/tunes/${responseTune.id}/prompts`, optionsForPrompt)
-        const responsePrompt =await  callPrompt.json()
-        res.status(200).json({ response: responsePrompt })
+        // const callPrompt =  await fetch(`https://api.astria.ai/tunes/${responseTune.id}/prompts`, optionsForPrompt)
+        // const responsePrompt =await  callPrompt.json()
+        // res.status(200).json({ response: responsePrompt })
 
     } else {
       res.status(500).json({ message: 'method not required' });

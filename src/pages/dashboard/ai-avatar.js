@@ -21,47 +21,54 @@ const AiAvatar = () => {
 
       <div className="main-form">
         <Formik
-          initialValues={{ title: '', dropdown: '', checked: [] }}
+          initialValues={{ title: '', name: '', prompts: "" }}
           validate={(values) => {
             const errors = {};
             if (!values.title) {
               errors.title = 'Required';
             }
-            // if (!values.password) {
-            //   errors.password = "Required";
-            // }
-            // if (!values.email) {
-            //   errors.email = "Required";
-            // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-            //   errors.email = "Invalid email address";
-            // }
+            if (!values.name) {
+              errors.name = 'Required';
+            }
+            if (!values.prompts) {
+              errors.prompts = 'Required';
+            }
+
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
 
+             if(selectedImage.files?.length < 4) {
+              alert('please select 4 images at least')
+              setSubmitting(false)
+              return
+             }
             const formData = new FormData();
-            // Object.keys(values).forEach((data) => {
-            //   formData.append(data, values[data]);
-
-            // });
-            formData.append('tune[title]', 'grumpy cat');
-            formData.append('tune[branch]', 'fast');
-            formData.append('tune[name]', 'man');
-            selectedImage.files?.forEach((element) => {
-              formData.append('tune[images][]', element);
+            Object.keys(values).forEach((data) => {
+              formData.append(data, values[data]);
             });
-            // formData.append('tune[callback]', 'man');
+
+            selectedImage.files?.forEach((element) => {
+              formData.append('file', element);
+            });
 
             let options = {
               method: 'POST',
-             // headers: { 'content-type': 'multipart/form-data;boundary=MyBoundary' },
-              body:  formData,
+
+              body: formData,
             };
 
-            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/finetuneasync`, options)
+            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/multer`, options)
               .then((r) => r.json())
-              .then((data) => console.log(data))
+              .then((data) =>{
+                setSubmitting(false)
+                if(data.response.id){
+                  alert("you will be notified by email")
+                }else {
+                  alert(data.response.text)
+                }
+
+              } )
               .catch((error) => console.log(error));
           }}
         >
@@ -131,24 +138,28 @@ const AiAvatar = () => {
                     onBlur={handleBlur}
                     value={values.title}
                   />
-                  <p className="">
+                  <p className="error">
                     {errors.title && touched.title && errors.title}
                   </p>
                 </div>
                 <div className="input-box">
-                  <label>Select:</label>
+                  <label>Select Name:</label>
                   <Form.Select
-                    name="dropdown"
-                    value={values.dropdown}
+                    name="name"
+                    value={values.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     aria-label="Default select example"
                   >
-                    <option>Open this select menu</option>
-                    <option value="One">One</option>
-                    <option value="Two"></option>
-                    <option value="Three">Three</option>
+                     <option  disabled></option>
+                    <option value="One">Male</option>
+                    <option value="Two">Female</option>
+                    <option value="Car">Car</option>
+                    <option value="Hat">Hat</option>
                   </Form.Select>
+                  <p className="error">
+                    {errors.name && touched.name && errors.name}
+                  </p>
                 </div>
                 <div
                   className="input-box"
@@ -161,31 +172,48 @@ const AiAvatar = () => {
                   <label>
                     <Field
                       type="checkbox"
-                      name="checked"
-                      value="Mixed Outputs"
+                      name="prompts"
+                      value='Mixed Outputs'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
                     <span>Mixed Outputs</span>
                   </label>
                   <label>
                     <Field
                       type="checkbox"
-                      name="checked"
+                      name="prompts"
+
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                       value="Linkedin Profile Pic"
                     />
                     <span>Linkedin Profile Pic</span>
                   </label>
                   <label>
-                    <Field type="checkbox" name="checked" value="Christmas" />
+                    <Field type="checkbox" name="prompts" value="Christmas"   onChange={handleChange}
+                      onBlur={handleBlur} />
                     <span>Christmas</span>
                   </label>
                   <label>
-                    <Field type="checkbox" name="checked" value="Vikings" />
+                    <Field type="checkbox" name="prompts" value="Vikings"   onChange={handleChange}
+                      onBlur={handleBlur} />
                     <span>Vikings</span>
                   </label>
+                  <label>
+                    <Field type="checkbox" name="prompts" value="portrait of sks cat as Santa dClaus8"   onChange={handleChange}
+                      onBlur={handleBlur} />
+                    <span>For testing</span>
+                  </label>
+
+
                 </div>
+                <p className="error">
+                    {errors.prompts && touched.prompts && errors.prompts}
+                  </p>
               </div>
               <div className="select-images-box">
-                <h5 className="select-img-heading">Select Images</h5>
+                <h5 className="select-img-heading">Select Images atleast 4</h5>
                 <Button
                   className="web-btn web"
                   variant="primary"
@@ -275,9 +303,9 @@ const AiAvatar = () => {
                 className="submit-btn"
                 variant="primary"
                 type="submit"
-                // disabled={isSubmitting}
+                disabled={isSubmitting}
               >
-                Submit
+                {!isSubmitting ? 'Submit' : 'Processing please wait ....'}
               </button>
             </form>
           )}
