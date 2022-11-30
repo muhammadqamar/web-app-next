@@ -18,7 +18,9 @@ export default function handler(req, res) {
       redirect: 'follow',
     };
 
-    fetch('https://web-next-app.netlify.app/api/prompt', requestOptions)
+    fetch('https://web-next-app.netlify.app/api/prompt', requestOptions).then((r) => r.json())
+    .then((data) => res.status(200).json({ response: data }))
+    .catch((error) => res.status(500).json({ response: error }));
 
   } else {
     res.status(500).json({ message: 'method not required' });

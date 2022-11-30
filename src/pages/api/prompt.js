@@ -13,7 +13,7 @@ export default function handler(req, res) {
     var raw = JSON.stringify({
       prompt: {
         text: req.body.text,
-        callback:`https://web-next-app.netlify.app/api/callbackforunitPrompt?email=${req.body.text}`,
+        callback:`https://web-next-app.netlify.app/api/callbackforunitPrompt?email=${req.body.email}`,
       },
 
     });
