@@ -19,7 +19,7 @@ const ImagesModel = (props) => {
       </Modal.Header>
       <Modal.Body>
         <div className="model-gallery-img">
-          {gallery?.map((item) => (
+          {/* {gallery?.map((item) => (
             <div
               className="gallery-img"
               style={{
@@ -29,7 +29,7 @@ const ImagesModel = (props) => {
                 backgroundRepeat: "no-repeat",
               }}
             />
-          ))}
+          ))} */}
         </div>
       </Modal.Body>
     </Modal>
