@@ -4,11 +4,11 @@
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 1rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
@@ -36,6 +36,53 @@
   margin-top: 12px;
 }
 
+.mt_12{
+  margin-top: 12px;
+}
+.btn{
+  width: 300px;
+  height: 32px;
+  border: none;
+  background-color: #0070f3;
+  color: #fafafa;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+.btn:hover{
+  background-color: #5d85b3;
+}
+.form_group{
+  /* display: flex; */
+  margin-top: 16px;
+}
+.form_lable{
+  margin-bottom: 2px;
+  display: block;
+  
+}
+.input_field{
+  width: 300px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid #222;
+}
+
+.auth_error{
+  width: 600px;
+  text-align: center;
+  background-color: rgb(228, 116, 116);
+ color: white;
+ border-radius: 4px;
+}
+.or_option{
+  margin-top: 20px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 900;
+}
+
 .title a:hover,
 .title a:focus,
 .title a:active {
@@ -45,7 +92,7 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .title,

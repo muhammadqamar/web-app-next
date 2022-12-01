@@ -1,18 +1,21 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
-import { auth } from '../service/firebase/firebase';
+import { auth } from '../config/firebase/firebase';
 import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { async } from '@firebase/util';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Formik } from 'formik';
 
 export default function Home() {
   const [user, setUser] = useAuthState(auth);
+  const [authError, setAuthError] = useState('');
 
   const handlerWithGoogleLogin = async () => {
     const googleAuth = new GoogleAuthProvider();
@@ -29,11 +32,39 @@ export default function Home() {
         console.log('Error:', error);
       });
   };
+
+  const createNewAccount = (userEmail, userPassword) => {
+    createUserWithEmailAndPassword(auth, userEmail, userPassword)
+      .then((userData) => {
+        setAuthError('');
+        console.log('user_data', userData);
+      })
+      .catch((error) => {
+        console.log('error_createNewAccount', error);
+        setAuthError(error.message);
+      });
+  };
+  const authLogin = async (userEmail, userPassword) => {
+    signInWithEmailAndPassword(auth, userEmail, userPassword)
+      .then((userData) => {
+        setAuthError('');
+        console.log('user_data', userData);
+      })
+      .catch((error) => {
+        console.log('error', error.message);
+        setAuthError(error.message);
+      });
+  };
   const logout = () => {
     auth.signOut();
   };
   useEffect(() => {
-    console.log(user);
+    setAuthError('');
+    // console.log(
+    //   'process.env.DB_HOST:',
+    //   process.env.NEXT_PUBLIC_FIREBASE_API_KEY
+    // );
+    // console.log(user);
   }, [user]);
 
   return (
@@ -45,22 +76,117 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome <span>{user?.displayName}</span>
-        </h1>
+        {authError && (
+          <>
+            <div className={styles.auth_error}>
+              <p>{authError}</p>
+            </div>
+          </>
+        )}
+        {user ? (
+          <>
+            <h1 className={styles.title}>
+              Welcome{' '}
+              <span>{user?.displayName ? user?.displayName : user?.email}</span>
+            </h1>
+          </>
+        ) : (
+          <h1 className={styles.title}>Please Login</h1>
+        )}
+
         <div className={styles.btn_div}>
           {user ? (
             <>
-              <button onClick={logout}>logout</button>
+              <button className={styles.btn} onClick={logout}>
+                logout
+              </button>
             </>
           ) : (
             <>
-              <button onClick={handlerWithGoogleLogin}>
-                login With Google
-              </button>
-              <button onClick={handlerWithFacebookLogin}>
-                login With FaceBook
-              </button>
+              <div>
+                <Formik
+                  initialValues={{ email: '', password: '' }}
+                  onSubmit={(values, actions) => {
+                    authLogin(values.email, values.password);
+                  }}
+                >
+                  {(props) => (
+                    <form onSubmit={props.handleSubmit}>
+                      <div className={styles.form_group}>
+                        <label className={styles.form_lable} htmlFor="email">
+                          Email
+                        </label>
+                        <input
+                          className={styles.input_field}
+                          type="text"
+                          onChange={props.handleChange}
+                          onBlur={props.handleBlur}
+                          value={props.values.email}
+                          name="email"
+                        />
+                        {props.errors.email && (
+                          <div id="feedback">{props.errors.email}</div>
+                        )}
+                      </div>
+                      <div className={styles.form_group}>
+                        <label className={styles.form_lable} htmlFor="password">
+                          Password
+                        </label>
+                        <input
+                          className={styles.input_field}
+                          type="text"
+                          onChange={props.handleChange}
+                          onBlur={props.handleBlur}
+                          value={props.values.password}
+                          name="password"
+                        />
+                        {props.errors.password && (
+                          <div id="feedback">{props.errors.password}</div>
+                        )}
+                      </div>
+                      <div className={styles.form_group}>
+                        <button
+                          className={`${styles.btn} ${styles.mt_12}`}
+                          type="submit"
+                        >
+                          Login
+                        </button>
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          className={`${styles.btn} ${styles.mt_12}`}
+                          onClick={() => {
+                            createNewAccount(
+                              props.values.email,
+                              props.values.password
+                            );
+                          }}
+                        >
+                          Create New Account
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </Formik>
+              </div>
+              <div className={styles.or_option}>OR</div>
+              <div>
+                <button
+                  className={`${styles.btn} ${styles.mt_12}`}
+                  onClick={handlerWithGoogleLogin}
+                >
+                  Login With Google
+                </button>
+              </div>
+              <div>
+                <button
+                  className={`${styles.btn} ${styles.mt_12}`}
+                  onClick={handlerWithFacebookLogin}
+                >
+                  Login With Facebook
+                </button>
+              </div>
             </>
           )}
         </div>
