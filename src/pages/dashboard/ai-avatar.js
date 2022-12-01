@@ -5,7 +5,7 @@ import Camera from 'react-html5-camera-photo';
 import { storage } from '../../../service/firebase/firebase';
 import 'react-html5-camera-photo/build/css/index.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { v4 } from 'uuid';
+
 import NavDashboard from '../../compunents/comman/layout/navDashboard'
 
 import TimeLine from '../../compunents/comman/timeLine';
@@ -21,14 +21,14 @@ const AiAvatar = () => {
     setSelectedImage({ files: [...selectedImage.files, dataUri] });
   }
 
-  const uploadImageHandler = async (imageDetail, counter) => {
+  const uploadImageHandler = async (imageDetail, counter, time) => {
 
     setUploadStatus(`uploading ${imageDetail.name} --------- ${counter + 1} `);
     if (imageDetail == null) {
       return;
     }
 
-    const imageRef = ref(storage, `images/${imageDetail.name + v4()}`);
+    const imageRef = ref(storage, `images/${time.toISOString()+imageDetail.name}`);
 
     const up = await uploadBytes(imageRef, imageDetail);
     const download = await getDownloadURL(up.ref);
@@ -66,10 +66,11 @@ const AiAvatar = () => {
               return;
             }
             const looparray = [];
+            var time = new Date()
             for (var i = 0; i < selectedImage.files.length; i++) {
               const getURL = await uploadImageHandler(
                 selectedImage.files[i],
-                i
+                i, time
               );
               looparray.push(getURL);
             }
