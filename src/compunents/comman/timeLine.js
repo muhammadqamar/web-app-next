@@ -2,7 +2,7 @@ import React from "react";
 
 const TimeLine = () => {
   return (
-    <div className="user-form">
+    <div className="user-form time_line_form">
       <div className="time-line">
         <div className="one-box">
           <div className="number">1</div>
