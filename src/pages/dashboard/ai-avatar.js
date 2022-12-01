@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Formik, Field } from 'formik';
 import { Button, Modal, Form } from 'react-bootstrap';
 import Camera from 'react-html5-camera-photo';
@@ -13,15 +13,16 @@ const AiAvatar = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState({ files: [] });
   const [selectedImageURL, setSelectedImageURL] = React.useState([]);
+  const [uploadStatus, setUploadStatus] = useState();
   function handleTakePhoto(dataUri) {
     // Do stuff with the photo...
 
     setSelectedImage({ files: [...selectedImage.files, dataUri] });
   }
-  const imageListRef = ref(storage, 'images/');
 
-  const uploadImageHandler = async (imageDetail) => {
-    console.log(`uploading ${imageDetail.name}`);
+  const uploadImageHandler = async (imageDetail, counter) => {
+
+    setUploadStatus(`uploading ${imageDetail.name} --------- ${counter + 1} `);
     if (imageDetail == null) {
       return;
     }
@@ -30,7 +31,7 @@ const AiAvatar = () => {
 
     const up = await uploadBytes(imageRef, imageDetail);
     const download = await getDownloadURL(up.ref);
-    console.log('test', download);
+
     return download;
   };
   const inputFolder = useRef();
@@ -62,11 +63,15 @@ const AiAvatar = () => {
               return;
             }
             const looparray = [];
-            for (const file of selectedImage.files) {
-              const getURL = await uploadImageHandler(file);
+            for (var i = 0; i < selectedImage.files.length; i++) {
+              const getURL = await uploadImageHandler(
+                selectedImage.files[i],
+                i
+              );
               looparray.push(getURL);
             }
             setSelectedImageURL(looparray);
+
             //   const formData = new FormData();
             //   Object.keys(values).forEach((data) => {
             //     formData.append(data, values[data]);
@@ -82,7 +87,7 @@ const AiAvatar = () => {
               body: JSON.stringify({
                 ...values,
                 callback: `${process.env.NEXT_PUBLIC_DOMAIN}/api/callbackforunit`,
-                prompts:values.prompts?.toString()+" sks "+values.name,
+                prompts: values.prompts?.toString() + ' sks ' + values.name,
                 image_urls: looparray,
               }),
             };
@@ -90,13 +95,14 @@ const AiAvatar = () => {
             fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/finetune`, options)
               .then((r) => r.json())
               .then((data) => {
-
+                setUploadStatus('upload images completed');
                 if (data.response.id) {
                   alert('you will be notified by email');
                 } else {
                   alert(data.response.text);
                 }
                 setSubmitting(false);
+
               })
               .catch((error) => console.log(error));
           }}
@@ -339,6 +345,13 @@ const AiAvatar = () => {
                 multiple
                 style={{ display: 'none' }}
               />
+              {uploadStatus && (
+                <p style={{marginBottom:'20px'}}>
+                  {uploadStatus} of {selectedImage.files.length}
+
+                </p>
+
+              )}
 
               <button
                 className="submit-btn"

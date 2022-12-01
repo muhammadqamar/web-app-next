@@ -42,7 +42,7 @@ export default async function  handler(req, res) {
       optionsForPrompt
     );
     const responsePrompt = await callPrompt.json();
-    res.status(200).json({ response: responsePrompt });
+    res.status(200).json({ response: callPrompt });
   } else {
     res.status(500).json({ message: 'method not required' });
   }
