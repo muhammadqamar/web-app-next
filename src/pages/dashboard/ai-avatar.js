@@ -27,10 +27,7 @@ const AiAvatar = () => {
       return;
     }
 
-    const imageRef = ref(
-      storage,
-      `images/${time.toISOString() + imageDetail.name}`
-    );
+    const imageRef = ref(storage, `images/${time.toISOString()}`);
 
     const up = await uploadBytes(imageRef, imageDetail);
     const download = await getDownloadURL(up.ref);
