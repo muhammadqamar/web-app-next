@@ -4,8 +4,9 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import Camera from 'react-html5-camera-photo';
 import { storage } from '../../../service/firebase/firebase';
 import 'react-html5-camera-photo/build/css/index.css';
-import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
+import NavDashboard from '../../compunents/comman/layout/navDashboard'
 
 import TimeLine from '../../compunents/comman/timeLine';
 
@@ -36,6 +37,8 @@ const AiAvatar = () => {
   };
   const inputFolder = useRef();
   return (
+    <>
+    <NavDashboard/>
     <div className="user-form">
       <TimeLine />
 
@@ -366,6 +369,7 @@ const AiAvatar = () => {
         </Formik>
       </div>
     </div>
+    </>
   );
 };
 

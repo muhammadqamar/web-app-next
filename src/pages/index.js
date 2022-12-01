@@ -6,6 +6,7 @@ import { async } from "@firebase/util";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import styles from "../assets/styles/Home.module.scss";
+import Router from 'next/router';
 
 export default function Home() {
   const [user, setUser] = useAuthState(auth);
@@ -28,9 +29,6 @@ export default function Home() {
   const logout = () => {
     auth.signOut();
   };
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <div className={styles.container}>
@@ -49,6 +47,7 @@ export default function Home() {
           {user ? (
             <>
               <button onClick={logout}>logout</button>
+              <button onClick={()=>Router.push('/dashboard')}>Go to dashboard</button>
             </>
           ) : (
             <>

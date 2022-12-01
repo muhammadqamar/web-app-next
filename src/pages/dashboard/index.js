@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { Modal, Button } from "react-bootstrap";
 import Card from "../../compunents/comman/cards";
+import NavDashboard from '../../compunents/comman/layout/navDashboard'
 
 const ImagesModel = (props) => {
   const { show, onHide, gallery } = props;
-  console.log(props)
+
   return (
+
     <Modal
       show={show}
       onHide={onHide}
@@ -36,13 +38,16 @@ const ImagesModel = (props) => {
   );
 };
 
-const Index = ({ posts }) => {
+const  Index = ({ posts }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [activeTune, setActiveTune] = React.useState([]);
-  console.log(posts);
+
   return (
+
     <>
+     <NavDashboard  />
       <div className="container top-nav-btn">
+
         <Link href="/dashboard/ai-avatar">
           <Button variant="primary">Create New</Button>
         </Link>
