@@ -6,7 +6,7 @@ export default async function  handler(req, res) {
       let optionsForTune = {
         method: 'POST',
         headers: {
-          Authorization: 'Bearer ' + 'sd_izwRvNfpqqP5v5g33iD8X3Vhjn2S51',
+          Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_AVATA_AI_KEY,
           'Content-Type':'application/json'
         },
         body:
@@ -30,7 +30,7 @@ export default async function  handler(req, res) {
       let optionsForPrompt = {
         method: 'POST',
         headers: {
-          Authorization: 'Bearer ' + 'sd_izwRvNfpqqP5v5g33iD8X3Vhjn2S51',
+          Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_AVATA_AI_KEY,
           'Content-Type':'application/json'
         },
         body:
@@ -43,12 +43,12 @@ export default async function  handler(req, res) {
         ,
         redirect: 'follow'
       };
-        // const fineTune =  await fetch('https://api.astria.ai/tunes', optionsForTune)
-        // const responseTune = await fineTune.json()
+        const fineTune =  await fetch('https://api.astria.ai/tunes', optionsForTune)
+        const responseTune = await fineTune.json()
 
-        // const callPrompt =  await fetch(`https://api.astria.ai/tunes/${responseTune.id}/prompts`, optionsForPrompt)
-        // const responsePrompt =await  callPrompt.json()
-        // res.status(200).json({ response: responsePrompt })
+        const callPrompt =  await fetch(`https://api.astria.ai/tunes/${responseTune.id}/prompts`, optionsForPrompt)
+        const responsePrompt =await  callPrompt.json()
+        res.status(200).json({ response: responsePrompt })
 
     } else {
       res.status(500).json({ message: 'method not required' });

@@ -4,7 +4,7 @@ export default function handler(req, res) {
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append(
       'X-Postmark-Server-Token',
-      '13486d73-9f24-4746-816f-57c80c7b3b76'
+      process.env.NEXT_PUBLIC_EMAIL_KEY
     );
 
     var raw = JSON.stringify({
@@ -13,9 +13,9 @@ export default function handler(req, res) {
       Subject: 'Postmark test',
       TextBody: 'Hello dear Postmark user.',
       HtmlBody: `<html><body><strong>Hello</strong>
-      <h1>email: ${req.query.email}</h1>
-      <p>${JSON.stringify(req.body)}</p>
-      </body></html>`,
+    <h1>email: ${req.query.email}</h1>
+    <p>${JSON.stringify(req.body)}</p>
+    </body></html>`,
       MessageStream: 'outbound',
     });
 

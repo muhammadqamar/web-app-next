@@ -7,7 +7,7 @@ export default function handler(req, res) {
     let options = {
       method: 'POST',
       headers: {
-        Authorization: 'Bearer ' + 'sd_izwRvNfpqqP5v5g33iD8X3Vhjn2S51',
+        Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_AVATA_AI_KEY,
         'Content-Type':'application/json'
       },
       body:

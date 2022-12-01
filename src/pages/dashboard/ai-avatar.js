@@ -2,18 +2,37 @@ import React, { useRef } from 'react';
 import { Formik, Field } from 'formik';
 import { Button, Modal, Form } from 'react-bootstrap';
 import Camera from 'react-html5-camera-photo';
+import { storage } from '../../../service/firebase/firebase';
 import 'react-html5-camera-photo/build/css/index.css';
+import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
+import { v4 } from 'uuid';
 
 import TimeLine from '../../compunents/comman/timeLine';
 
 const AiAvatar = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState({ files: [] });
+  const [selectedImageURL, setSelectedImageURL] = React.useState([]);
   function handleTakePhoto(dataUri) {
     // Do stuff with the photo...
 
     setSelectedImage({ files: [...selectedImage.files, dataUri] });
   }
+  const imageListRef = ref(storage, 'images/');
+
+  const uploadImageHandler = async (imageDetail) => {
+    console.log(`uploading ${imageDetail.name}`);
+    if (imageDetail == null) {
+      return;
+    }
+
+    const imageRef = ref(storage, `images/${imageDetail.name + v4()}`);
+
+    const up = await uploadBytes(imageRef, imageDetail);
+    const download = await getDownloadURL(up.ref);
+    console.log('test', download);
+    return download;
+  };
   const inputFolder = useRef();
   return (
     <div className="user-form">
@@ -21,7 +40,7 @@ const AiAvatar = () => {
 
       <div className="main-form">
         <Formik
-          initialValues={{ title: '', name: '', prompts: "" }}
+          initialValues={{ title: '', name: '', prompts: '' }}
           validate={(values) => {
             const errors = {};
             if (!values.title) {
@@ -36,39 +55,49 @@ const AiAvatar = () => {
 
             return errors;
           }}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
+            if (selectedImage.files?.length < 4) {
+              alert('please select 4 images at least');
+              setSubmitting(false);
+              return;
+            }
+            const looparray = [];
+            for (const file of selectedImage.files) {
+              const getURL = await uploadImageHandler(file);
+              looparray.push(getURL);
+            }
+            setSelectedImageURL(looparray);
+            //   const formData = new FormData();
+            //   Object.keys(values).forEach((data) => {
+            //     formData.append(data, values[data]);
+            //   });
 
-             if(selectedImage.files?.length < 4) {
-              alert('please select 4 images at least')
-              setSubmitting(false)
-              return
-             }
-            const formData = new FormData();
-            Object.keys(values).forEach((data) => {
-              formData.append(data, values[data]);
-            });
-
-            selectedImage.files?.forEach((element) => {
-              formData.append('file', element);
-            });
+            //   selectedImage.files?.forEach((element) => {
+            //     formData.append('file', element);
+            //   });
 
             let options = {
               method: 'POST',
 
-              body: formData,
+              body: JSON.stringify({
+                ...values,
+                callback: `${process.env.NEXT_PUBLIC_DOMAIN}/api/callbackforunit`,
+                prompts:values.prompts?.toString()+" sks "+values.name,
+                image_urls: looparray,
+              }),
             };
 
-            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/multer`, options)
+            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/finetune`, options)
               .then((r) => r.json())
-              .then((data) =>{
-                setSubmitting(false)
-                if(data.response.id){
-                  alert("you will be notified by email")
-                }else {
-                  alert(data.response.text)
-                }
+              .then((data) => {
 
-              } )
+                if (data.response.id) {
+                  alert('you will be notified by email');
+                } else {
+                  alert(data.response.text);
+                }
+                setSubmitting(false);
+              })
               .catch((error) => console.log(error));
           }}
         >
@@ -151,7 +180,7 @@ const AiAvatar = () => {
                     onBlur={handleBlur}
                     aria-label="Default select example"
                   >
-                     <option  disabled></option>
+                    <option disabled></option>
                     <option value="One">Male</option>
                     <option value="Two">Female</option>
                     <option value="Car">Car</option>
@@ -173,7 +202,7 @@ const AiAvatar = () => {
                     <Field
                       type="checkbox"
                       name="prompts"
-                      value='Mixed Outputs'
+                      value="Mixed Outputs"
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
@@ -183,7 +212,6 @@ const AiAvatar = () => {
                     <Field
                       type="checkbox"
                       name="prompts"
-
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value="Linkedin Profile Pic"
@@ -191,26 +219,39 @@ const AiAvatar = () => {
                     <span>Linkedin Profile Pic</span>
                   </label>
                   <label>
-                    <Field type="checkbox" name="prompts" value="Christmas"   onChange={handleChange}
-                      onBlur={handleBlur} />
+                    <Field
+                      type="checkbox"
+                      name="prompts"
+                      value="Christmas"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
                     <span>Christmas</span>
                   </label>
                   <label>
-                    <Field type="checkbox" name="prompts" value="Vikings"   onChange={handleChange}
-                      onBlur={handleBlur} />
+                    <Field
+                      type="checkbox"
+                      name="prompts"
+                      value="Vikings"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
                     <span>Vikings</span>
                   </label>
                   <label>
-                    <Field type="checkbox" name="prompts" value="portrait of sks cat as Santa dClaus8"   onChange={handleChange}
-                      onBlur={handleBlur} />
+                    <Field
+                      type="checkbox"
+                      name="prompts"
+                      value="portrait of sks cat as Santa dClaus8"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
                     <span>For testing</span>
                   </label>
-
-
                 </div>
                 <p className="error">
-                    {errors.prompts && touched.prompts && errors.prompts}
-                  </p>
+                  {errors.prompts && touched.prompts && errors.prompts}
+                </p>
               </div>
               <div className="select-images-box">
                 <h5 className="select-img-heading">Select Images atleast 4</h5>
@@ -303,7 +344,7 @@ const AiAvatar = () => {
                 className="submit-btn"
                 variant="primary"
                 type="submit"
-               // disabled={isSubmitting}
+                // disabled={isSubmitting}
               >
                 {!isSubmitting ? 'Submit' : 'Processing please wait ....'}
               </button>

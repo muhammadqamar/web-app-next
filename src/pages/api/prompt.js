@@ -6,7 +6,7 @@ export default function handler(req, res) {
     var myHeaders = new Headers();
     myHeaders.append(
       'Authorization',
-      'Bearer sd_izwRvNfpqqP5v5g33iD8X3Vhjn2S51'
+      `Bearer ${process.env.NEXT_PUBLIC_AVATA_AI_KEY}`
     );
     myHeaders.append('Content-Type', 'application/json');
 

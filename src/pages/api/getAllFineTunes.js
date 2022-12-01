@@ -3,7 +3,7 @@
 export default function handler(req, res) {
     if (req.method === 'GET') {
       var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Bearer sd_izwRvNfpqqP5v5g33iD8X3Vhjn2S51");
+      myHeaders.append("Authorization", `Bearer ${process.env.NEXT_PUBLIC_AVATA_AI_KEY}`);
 
       var requestOptions = {
         method: 'GET',
