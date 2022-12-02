@@ -32,7 +32,7 @@ a {
   max-width: 1440px;
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
+  // padding: 0 20px;
   margin: 46px 0 46px;
   border-top: 1px solid #eee;
   background-color: #fff;
@@ -49,7 +49,9 @@ a {
     align-items: flex-end;
     background: #f9f6fc;
     padding: 20px 44px;
-
+    @media (max-width: 768px) {
+      padding: 20px;
+    }
     .hr-line {
       width: 2px;
       height: 100%;
@@ -92,6 +94,12 @@ a {
         width: 14px;
         height: 14px;
         border-radius: 50%;
+        @media (min-width: 1432px) and (max-width: 1439px) {
+          right: -67%;
+        }
+        @media (min-width: 1414px) and (max-width: 1432px) {
+          right: -55%;
+        }
       }
 
       .number {
@@ -244,9 +252,12 @@ a {
   margin: 46px auto 0;
 }
 .time_line_form {
-  // width: 342px;
   border-top: none;
+  padding: 0;
   width: 400px;
+  @media (min-width: 992px) and (max-width: 1339px) {
+    width: 300px;
+  }
 }
 .dashboard-cards-box {
   padding: 80px 40px;
