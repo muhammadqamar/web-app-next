@@ -25,7 +25,14 @@ const Navbar = () => {
           />
           {user && <p>Welcome {user.displayName}</p>}
         </div>
-        {user && <button onClick={() => auth.signOut()}>logout</button>}
+        {user && (
+          <button
+            className="web-btn web btn btn-primary"
+            onClick={() => auth.signOut()}
+          >
+            logout
+          </button>
+        )}
       </div>
     </div>
   );
